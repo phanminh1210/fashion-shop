@@ -1,0 +1,44 @@
+@font-face {
+  font-family: vnRegular;
+  src: url(./assets/fonts/BeVietnamPro-Regular.ttf);
+}
+@font-face {
+  font-family: vnBold;
+  src: url(./assets/fonts/BeVietnamPro-Bold.ttf);
+}
+@font-face {
+  font-family: vnSemiBold;
+  src: url(./assets/fonts/BeVietnamPro-SemiBold.ttf);
+}
+@font-face {
+  font-family: vnMedium;
+  src: url(./assets/fonts/BeVietnamPro-Medium.ttf);
+}
+@font-face {
+  font-family: vnLight;
+  src: url(./assets/fonts/BeVietnamPro-Light.ttf);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: #f7f9fb;
+  font-family: vnRegular, sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  padding: 0;
+  margin: 0;
+}

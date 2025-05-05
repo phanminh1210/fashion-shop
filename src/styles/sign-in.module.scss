@@ -1,0 +1,154 @@
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: #f6f6f6;
+
+  &__container {
+    width: 416px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  &__top {
+    background-color: #000000;
+    padding: 24px;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  &__heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 6px 0;
+  }
+
+  &__subheading {
+    font-size: 13px;
+    color: #cccccc;
+  }
+
+  &__form {
+    padding: 36px 24px;
+    background-color: #ffffff;
+  }
+
+  &__label {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333333;
+  }
+
+  input {
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #cccccc;
+    padding: 8px 15px;
+    outline: none;
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+    color: #000000;
+    background-color: #fafafa;
+    font-size: 14px;
+
+    &::placeholder {
+      color: #999999;
+      font-size: 13px;
+    }
+
+    &:focus {
+      border-color: #000000;
+    }
+  }
+
+  &__btn {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+
+    &:hover {
+      background-color: #333333;
+    }
+  }
+
+  &__icon {
+    width: 20px;
+    aspect-ratio: 1 / 1;
+    background-image: url(../../public/icons8-login-64.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 8px;
+  }
+
+  &__error {
+    font-size: 13px;
+    color: #ef4d56;
+    margin-bottom: 8px;
+  }
+
+  &__success {
+    color: #22c55e;
+    margin-bottom: 8px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 1rem;
+
+    .login__btn,
+    .login__signupBtn {
+      flex: 1;
+      height: 40px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+  }
+
+  &__signupBtn {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #000000;
+      color: #ffffff;
+    }
+  }
+}
+
+.login__logoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 1rem;
+}
+
+.login__logoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.login__logoText {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+}

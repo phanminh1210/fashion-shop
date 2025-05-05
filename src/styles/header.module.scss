@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+
+.shopName {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #000000;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #ffd700;
+    transform: scale(1.05);
+  }
+}
