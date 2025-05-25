@@ -27,14 +27,14 @@ export default function Products() {
     }, []);
 
     return (
-        <Box sx={{ padding: 4 }}>
+        <Box sx={{ mx: '10%', paddingY: 4 }}>
             <Typography variant="h4" gutterBottom>
                 Tất cả sản phẩm
             </Typography>
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(5, 1fr)',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
                     gap: 3,
                 }}
             >
