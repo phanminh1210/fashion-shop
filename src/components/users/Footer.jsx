@@ -1,6 +1,6 @@
 import { Box, Typography, Grid, Container, TextField, Button, IconButton } from "@mui/material";
 import { Facebook, Instagram, YouTube, TikTok } from "@mui/icons-material";
-import Logo from '../assets/images/logo.png';
+import Logo from '../../assets/images/logo.png';
 
 export default function Footer() {
     return (
@@ -48,7 +48,7 @@ export default function Footer() {
                         <Typography variant="body2">Hướng dẫn mua hàng</Typography>
                         <Typography variant="body2">Hướng dẫn thanh toán</Typography>
                         <Typography variant="body2">Kiểm tra đơn hàng</Typography>
-                        <Typography variant="body2">Liên hệ hỗ trợ</Typography>
+                        <Typography variant="body2">Liên hệ hỗ trợ: 0921122126</Typography>
                     </Grid>
 
                     {/* Đăng ký nhận tin & Mạng xã hội */}

@@ -1,9 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "../users/Header";
+import Footer from "../users/Footer";
 import { useEffect } from "react";
 
-export default function LayoutRoot() {
+export default function UserLayout() {
     const navigate = useNavigate();
 
     useEffect(() => {

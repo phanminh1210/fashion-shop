@@ -1,0 +1,13 @@
+.cartTableRow {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #fefefe;
+  }
+
+  td {
+    border-bottom: 1px solid #eee;
+  }
+}

@@ -1,31 +1,34 @@
 import { Link, useNavigate } from 'react-router-dom';
 import {
-    AppBar,
-    Toolbar,
-    Box,
-    Typography,
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-    InputBase,
-    Tooltip
+    AppBar, Toolbar, Box, Typography, Button, IconButton,
+    Menu, MenuItem, InputBase, Tooltip, Badge
 } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import SearchIcon from '@mui/icons-material/Search';
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+    AccountCircle as AccountCircleIcon,
+    ShoppingCart as ShoppingCartIcon,
+    Assignment as AssignmentIcon,
+    Search as SearchIcon,
+    Menu as MenuIcon
+} from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import Logo from '../assets/images/logo.png';
-import s from '../styles/header.module.scss';
+import axios from 'axios';
+import Logo from '../../assets/images/logo.png';
+import s from '../../styles/header.module.scss';
+import { Forum as ForumIcon } from '@mui/icons-material';
+import { DashboardCustomize as DashboardCustomizeIcon } from '@mui/icons-material';
+
+
+
 
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [scrolled, setScrolled] = useState(false);
+    const [cartCount, setCartCount] = useState(0); // Đếm số thứ tự bản ghi cuối cùng
     const navigate = useNavigate();
     const open = Boolean(anchorEl);
+    const [searchTerm, setSearchTerm] = useState("");
+
 
     useEffect(() => {
         const user = localStorage.getItem("user");
@@ -33,12 +36,21 @@ export default function Header() {
     }, []);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 10);
-        };
-
+        const handleScroll = () => setScrolled(window.scrollY > 10);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        axios.get('http://localhost:8111/api/v1/carts')
+            .then(res => {
+                const items = res.data.content;
+                setCartCount(items.length); // Số thứ tự bản ghi cuối
+            })
+            .catch(err => {
+                console.error("Lỗi khi lấy giỏ hàng:", err);
+                setCartCount(0);
+            });
     }, []);
 
     const handleLogout = () => {
@@ -47,12 +59,20 @@ export default function Header() {
         navigate("/sign-in");
     };
 
-    const handleMenuClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+    const handleMenuClose = () => setAnchorEl(null);
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
+    const handleSearchKeyPress = (e) => {
+        if (e.key === "Enter") {
+            axios.get(`http://localhost:8111/api/v1/categories/products/search?name=${searchTerm}&color=${searchTerm}`)
+                .then(res => {
+                    const results = res.data?.content || [];
+                    navigate('/search-results', { state: { results, keyword: searchTerm } });
+                })
+                .catch(err => {
+                    console.error("Lỗi tìm kiếm:", err);
+                });
+        }
     };
 
     return (
@@ -68,7 +88,7 @@ export default function Header() {
                 }}
             >
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
-                    {/* Logo và các liên kết bên trái */}
+                    {/* Logo + Trang chủ */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2, flexGrow: 1, minWidth: 250 }}>
                         <Box
                             component={Link}
@@ -90,48 +110,37 @@ export default function Header() {
                                 Maison M&H
                             </Typography>
                         </Box>
-
                         <Button component={Link} to="/" color="inherit" sx={{ textTransform: 'none' }}>
                             Trang chủ
                         </Button>
                     </Box>
 
-                    {/* Bên phải: Danh mục, Tìm kiếm, Giỏ hàng, Đơn hàng, Đăng nhập */}
+                    {/* Các nút chức năng bên phải */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2, ml: 2 }}>
                         <Button
                             color="inherit"
                             onClick={handleMenuClick}
-                            sx={{
-                                textTransform: 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 1,
-                            }}
+                            sx={{ textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
                         >
                             <MenuIcon fontSize="small" />
                             Danh mục
                         </Button>
 
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleMenuClose}
-                        >
+                        <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                             <MenuItem onClick={handleMenuClose} component={Link} to="/category/ao">Áo</MenuItem>
                             <MenuItem onClick={handleMenuClose} component={Link} to="/category/quan">Quần</MenuItem>
                             <MenuItem onClick={handleMenuClose} component={Link} to="/category/phukien">Phụ kiện</MenuItem>
                             <MenuItem onClick={handleMenuClose} component={Link} to="/products">Tất cả</MenuItem>
                         </Menu>
 
-                        {/* Thanh tìm kiếm */}
+                        {/* Tìm kiếm */}
                         <Box
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 backgroundColor: '#f5f5f5',
                                 borderRadius: '999px',
-                                px: 2,
-                                py: 0.5,
+                                px: 2, py: 0.5,
                                 minWidth: 250,
                                 maxWidth: 400,
                                 ml: 2,
@@ -141,10 +150,15 @@ export default function Header() {
                             <SearchIcon sx={{ color: '#888', mr: 1 }} />
                             <InputBase
                                 placeholder="Tìm kiếm"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={handleSearchKeyPress}
                                 sx={{ flex: 1, color: '#333' }}
                                 inputProps={{ 'aria-label': 'tìm kiếm' }}
                             />
+
                         </Box>
+
 
                         {/* Tài khoản */}
                         <Tooltip title="Tài khoản">
@@ -153,10 +167,12 @@ export default function Header() {
                             </IconButton>
                         </Tooltip>
 
-                        {/* Giỏ hàng */}
+                        {/* Giỏ hàng có badge */}
                         <Tooltip title="Giỏ hàng">
                             <IconButton color="inherit" component={Link} to="/carts">
-                                <ShoppingCartIcon />
+                                <Badge badgeContent={cartCount} color="error" max={99}>
+                                    <ShoppingCartIcon />
+                                </Badge>
                             </IconButton>
                         </Tooltip>
 
@@ -167,7 +183,20 @@ export default function Header() {
                             </IconButton>
                         </Tooltip>
 
-                        {/* Đăng nhập/Đăng xuất */}
+                        {/* Tin nhắn */}
+                        <Tooltip title="Tin nhắn">
+                            <IconButton color="inherit" component={Link} to="/messages">
+                                <ForumIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Hồ sơ cá nhân">
+                            <IconButton color="inherit" component={Link} to="/profile">
+                                <AccountCircleIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                        {/* Đăng nhập / Đăng xuất */}
                         {isLoggedIn ? (
                             <Button
                                 variant="outlined"
@@ -204,7 +233,7 @@ export default function Header() {
                 </Toolbar>
             </AppBar>
 
-            {/* Padding tránh nội dung bị che bởi AppBar cố định */}
+            {/* Toolbar để tránh nội dung bị che */}
             <Toolbar />
         </>
     );

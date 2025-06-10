@@ -1,9 +1,9 @@
 import React from "react";
-import Footer from "../components/Footer";
+import Footer from "./Footer";
 import { Box } from "@mui/material";
-import bannerAoPhong from "../assets/images/homepage/banner_aophong.jpg";
-import bannerQuanJean from "../assets/images/homepage/banner_quanjean.png";
-import bannerGiay from "../assets/images/homepage/banner_giay.jpg";
+import bannerAoPhong from "../../assets/images/homepage/banner_aophong.jpg";
+import bannerQuanJean from "../../assets/images/homepage/banner_quanjean.png";
+import bannerGiay from "../../assets/images/homepage/banner_giay.jpg";
 
 export default function HomePage() {
     return (

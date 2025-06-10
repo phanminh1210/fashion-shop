@@ -27,29 +27,50 @@ export default function SignIn() {
         }
 
         try {
-            const res = await axios.get("http://localhost:8111/api/v1/admins");
-            const adminList = res.data.content;
+            const [userRes, adminRes] = await Promise.all([
+                axios.get("http://localhost:8111/api/v1/users"),
+                axios.get("http://localhost:8111/api/v1/admins")
+            ]);
 
-            const foundAdmin = adminList.find(
-                (admin) =>
-                    admin.username === user.username.trim() &&
-                    admin.password === user.password.trim()
+            const users = userRes.data.content;
+            const admins = adminRes.data.content;
+            const allAccounts = [...users, ...admins];
+
+            const foundAccount = allAccounts.find(
+                (account) =>
+                    account.username === user.username.trim() &&
+                    account.password === user.password.trim()
             );
 
-            if (!foundAdmin) {
+            if (!foundAccount) {
                 setMsgError("Account incorrect!");
                 return;
             }
 
-            localStorage.setItem("user", JSON.stringify(foundAdmin));
+            localStorage.setItem("user", JSON.stringify(foundAccount));
             setMsgSuccess("Sign in successfully");
 
-            setTimeout(() => navigate("/"), 1000);
+            // Kiểm tra xem tài khoản có trong danh sách admin không
+            const isAdmin = admins.some(
+                (admin) =>
+                    admin.username === foundAccount.username &&
+                    admin.password === foundAccount.password
+            );
+
+            setTimeout(() => {
+                if (isAdmin) {
+                    navigate("/admin"); // Đường dẫn đến AdminLayout
+                } else {
+                    navigate("/"); // Đường dẫn cho user thường
+                }
+            }, 1000);
         } catch (error) {
             setMsgError("Server error. Please try again later.");
             console.error(error);
         }
     };
+
+
 
     return (
         <div className={s.login}>
